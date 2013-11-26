@@ -188,6 +188,13 @@ memory_extender_handler_install:
 .weak _num_global_timers_set
 .add_to_set _num_global_timers_set, handler.maxtimers, handler
 
+// Exception handler. In the case of a load / store exception the exception
+// handler must extract the type of instruction and the source / destination
+// register. The crc instruction is used to map the spase set of instruction
+// encodings to a dense set of integers that can be used to index a lookup
+// table. The polynomials and lookup tables are generated using a brute force
+// search, see https://github.com/xcore/tool_map_generator.
+
 .set handler.nstackwords, 10 + \
   (memory_extender_st8.nstackwords $M memory_extender_st16.nstackwords \
    $M memory_extender_stw.nstackwords $M memory_extender_ld8u.nstackwords \

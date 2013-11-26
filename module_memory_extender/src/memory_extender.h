@@ -6,6 +6,11 @@
 #ifndef _memory_extender_h_
 #define _memory_extender_h_
 
+/**
+ * \file
+ * \brief Translates load / store exceptions to interface method calls.
+ */
+
 #include <stdint.h>
 
 interface memory_extender {
@@ -21,6 +26,13 @@ interface memory_extender {
 
 void memory_extender_install(client interface memory_extender * movable);
 
+/**
+ * Convert an address in external memory to a pointer. Any memory access via
+ * this pointer will trigger a load / store exception. On an load / store
+ * exception, the exception handler translates the pointer back into an address
+ * in external memory and the address in external memory is passed to the
+ * memory_extender server.
+ */
 inline unsafe void * unsafe memory_extender_translate(uintptr_t address) {
   if ((intptr_t)address < 0) {
     __builtin_trap();
