@@ -284,10 +284,10 @@ long:
   add r11, r2, 2
   stw r11, sp[1]
   ld16s r2, r2[r3]
-  ldc r11, 0x3
+  ldc r11, 0x6
   crc32 r2, r11, r11
   bru r2
-  .jmptable long_st8, long_st16, unhandled, long_stw
+  .jmptable long_st16, long_st8, long_stw
 long_st8:
   bl get_reg
   bl memory_extender_st8
