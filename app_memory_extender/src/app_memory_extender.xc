@@ -40,18 +40,28 @@
   }
 }
 
+int index = 0;
+
 static void test(client interface memory_extender mem)
 {
   client interface memory_extender * movable p = &mem;
   memory_extender_install(move(p));
   int x = 1;
   unsafe {
-    int * unsafe p = memory_extender_translate((uintptr_t)&x);
-    *p += 1;
+    int * unsafe p1 = memory_extender_translate((uintptr_t)&x);
+    *p1 += 1;
+    p1[index] += 1;
+    short * unsafe p2 = memory_extender_translate((uintptr_t)&x);
+    *p2 += 1;
+    p2[index] += 1;
+    char * unsafe p3 = memory_extender_translate((uintptr_t)&x);
+    *p3 += 1;
+    p3[index] += 1;
   }
   debug_printf("x = %d\n", x);
-  __builtin_trap();
-  _Exit(0);
+  // Check that exception handler passes exceptions that are not load / store
+  // exceptions to the original exception handler.
+   __builtin_trap();
 }
 
 int main()
