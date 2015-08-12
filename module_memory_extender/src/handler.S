@@ -21,7 +21,7 @@ old_kep:
 .cc_top kernel_stack.data
 .align 4
 kernel_stack:
-.space KERNEL_STACKWORDS
+.space KERNEL_STACKWORDS * 4
 .size kernel_stack, .-kernel_stack
 .cc_bottom kernel_stack.data
 
@@ -170,7 +170,7 @@ memory_extender_handler_install:
   stw r11, dp[old_kep]
   // Set ksp.
   ldaw r0, sp[0]
-  ldaw sp, dp[kernel_stack + 1024 - 4]
+  ldaw sp, dp[kernel_stack + KERNEL_STACKWORDS * 4 - 4]
   stw r0, sp[0]
   krestsp 0
   // Set kep.
